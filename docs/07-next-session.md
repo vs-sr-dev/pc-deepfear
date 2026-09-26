@@ -32,8 +32,9 @@ retries 20 000 times.
 ## Then: on screen (phase 5)
 
 * The logo screens draw only their first ~80 lines; the title menu's text
-  is missing (open question 15): `--dump` at those VBlanks, VDP2's
-  layers and VDP1's commands.
+  is missing (open question 15, seen by the user too): the game enables
+  VDP2's rotation planes (RBG0/RBG1) and windows, which saturnkit's VDP2
+  does not draw yet; `--dump` at those VBlanks, then implement them.
 * The first room: the background (336×240, 8 bpp cells) and its mask on
   VDP2 (open question 4), the player on VDP1; against Beetle's picture
   (`tools/oracle.py --at 36:START,39:START,60:START,66:shot`).

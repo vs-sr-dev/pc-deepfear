@@ -16,4 +16,4 @@
 | 12 | `PLAYALL.AVI` and `PLAYONCE.AVI` in the program's strings are not on the discs: a movie theatre mode, or leftovers? | their users in the code |
 | 13 | What is in the SGL work areas at 0x060C0000–0x060FB800? | SGL's `workarea.c` layout against the table at 0x0605A460 |
 | 14 | **The stall after New Game** (session 2): how do GFS_SGL's stream (the music, filter 0) and a file read (filter 1) share the drive? What does the CD block do on a Play over a range already being read, on a full buffer, at the end of a play's length, that the runtime does not? | the trace of commands 0x10/0x30/0x40–0x48 and the status/HIRQ the game polls; GFS_SGL's code (0x06031xxx–0x06036xxx); Sega's CD block manual |
-| 15 | The logo screens draw only their first ~80 lines, and the title menu's text is missing | the VDP2 and VDP1 state at those screens (`--dump`) |
+| 15 | The logo screens draw only their first ~80 lines, and the title menu's text is missing (seen by the user too). The game enables VDP2's rotation planes (RBG0/RBG1) and windows, not drawn yet: the cause? | implement them in saturnkit's VDP2; `--dump` at those screens |

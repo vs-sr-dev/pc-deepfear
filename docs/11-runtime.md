@@ -73,7 +73,11 @@ first task (`07-next-session.md`).
 ## Other things seen
 
 * The logo screens draw only their first ~80 lines, and the title menu's
-  text ("New Game") is missing: VDP2 or VDP1 features not yet used by
-  Virtual Hydlide, to look at when the game gets on screen for real.
+  text ("New Game") is missing. **Seen by the user** in the window
+  (`tools/run.py --play`, with a gamepad): the title menu otherwise right,
+  the logos only a small part at the top. At the boot the runtime reports
+  that the game turns on **VDP2's rotation planes (RBG0/RBG1, BGON 0x0013)
+  and its windows (WCTL)**, which saturnkit does not draw yet: the likely
+  cause of both, and phase 5's first VDP2 work.
 * The runtime runs VBlanks at 60 Hz: the European game at the speed it
   was made for.
