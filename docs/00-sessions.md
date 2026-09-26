@@ -38,4 +38,5 @@
   played from the boot to the opening movie; the movies and the
   real-time cutscenes have English voices and no subtitles at all (the
   Japanese subtitle pictures on the disc go unused), and text appears
-  only when the player examines things.
+  only when the player examines things; the title menu's "Option" is
+  the in-game options screen, with no subtitle or language setting.
