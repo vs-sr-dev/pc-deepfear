@@ -1,0 +1,19 @@
+# BYOA: no content from the original discs enters the repo.
+build/
+iso/
+*.cue
+*.bin
+*.BIN
+*.iso
+*.ISO
+*.chd
+*.wav
+*.png
+*.AVI
+*.ADX
+*.ACX
+*.SPR
+*.SMD
+*.STX
+__pycache__/
+*.pyc
