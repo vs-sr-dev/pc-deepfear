@@ -43,9 +43,11 @@ The abstract, `DEEP_ABS.TXT`, reads 「ムービーを大量に使用したア�
 
 The one audio track is the same on both discs (the file system's
 `SEGACDDA` entry points at it, byte-identical between the discs): 16
-seconds, most likely the usual warning for CD players (not listened to
-yet, `05-open-questions.md`). **There is no CD-DA music**: the music is
-ADX (`02-data-formats.md`).
+seconds of music with no voice, a jingle of the kind that goes with a
+logo (heard by the user), not the usual spoken warning for CD players.
+The game does not play it from the boot to the opening movie; whether it
+does later is open (`05-open-questions.md`). **There is no
+other CD-DA**: the music is ADX (`02-data-formats.md`).
 
 ## File tree
 

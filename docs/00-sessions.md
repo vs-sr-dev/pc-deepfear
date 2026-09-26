@@ -33,3 +33,7 @@
   with saturnkit to learn GCC's code, the SCU DSP, SGL's timing, a second
   disc; the frame rate and the resolution as the port's gains.
 * saturnkit unchanged this session (`10-saturnkit.md`).
+* **Heard and seen by the user** in Beetle: the 16-second audio track is
+  a wordless jingle, not the spoken CD-player warning, and it is not
+  played from the boot to the opening movie; the attract and opening
+  movies have English voices and no subtitles.
