@@ -63,8 +63,10 @@
   vectors (and saturnkit's 9 300).
 * **The first run** (`tools/run.py`, `11-runtime.md`): the recompiled
   game boots on saturnkit's runtime, draws its logos and title, plays the
-  attract movie with its TrueMotion decoder, and its music is heard (by
-  the counts), at SGL's 30 fps. saturnkit gained the SCU DSP interpreter
+  attract movie with its TrueMotion decoder and its sound, at SGL's 30
+  fps. Played by the user in a window: the title menu right but for its
+  text, the logos cut to their top, the menu's sound effects right; the
+  title is silent, as on Beetle. saturnkit gained the SCU DSP interpreter
   and `SYS_CHGUIPR`. After New Game, loading stalls: GFS_SGL's music
   stream and a file read do not share the drive as on the Saturn (open
   question 14).

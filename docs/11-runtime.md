@@ -12,7 +12,7 @@ saturnkit's runtime, headless and deterministic (virtual time, VBlanks at
 | ~200–450 | the Duck TrueMotion and CRI ADX screens | only their first lines are drawn (below) |
 | ~600 | **the title**, "Press Start Button" blinking | as Beetle's |
 | ~1430 | **the attract movie** `MV000M00.AVI`: TrueMotion decoded by the game's own code, drawn through VDP1 | the frames look right |
-| | **sound**: the ADX music and the movie's sound, 2.6 million of 3.7 million samples not silent in 5 000 VBlanks | not listened to yet |
+| | **sound**: the movie's, 2.6 million of 3.7 million samples not silent in 5 000 VBlanks; the menu's confirm and select effects (ADX from the `ACX` banks) | the effects **heard right by the user**; the title is silent, as on Beetle (its recording: sound only in the BIOS's first 12 s, then none until the movie) |
 | 1100, 1250 | START on the title, START on New Game | the menu's text is not drawn (below) |
 | ~1500 | loading the game (`load_game`, 0x060106A8): **stalls** | GFS waits for sectors that never come (below) |
 
@@ -39,6 +39,9 @@ drawing instant, dynamic frame never has to wait.
   to sound RAM at `WA0`. So the SH-2 feeds ADX blocks, the DSP decodes
   them straight into the sound driver's PCM buffers.
 * The recompiler's fixes for SGL's assembly (`09-recompiler.md`).
+
+The music of a room has not played yet (the title has none); its ADX
+decode against ffmpeg's is still to compare (open question 3).
 
 The rest was there from Virtual Hydlide: the HLE boot, SGL's VBlank
 work (the SH-2's DMAC channel 1 copying the VDP2 register image, SCU DMA
