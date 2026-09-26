@@ -63,11 +63,27 @@ then `main` at **0x060040C4**. The BSS starts exactly where the file ends
 `main` (0x060040C4) runs the game's initialisation (`0x06004314`, below)
 and `0x0600C5A4`, then loops over **a state machine**: the byte at
 0x06063410 (1–8, set to 8 at the start) chooses the state through a GCC
-switch at 0x06004110. The states call the game's top-level functions
-(`0x060044A4` with the byte at 0x0605A492, `0x06004B24`, `0x06025A24`,
-`0x060260FC`, `0x06023AEC`, `0x060106A8`, `0x06023BF8`, `0x06010D40`);
-what each is (title, new game, the rooms, the movies, the menus) is phase
-2's reading.
+switch at 0x06004110. The states call the game's top-level functions,
+named in session 2 by the files their call trees use
+(`tools/names-1st.tsv`):
+
+| Function | What |
+|---|---|
+| `0x060044A4` boot_and_title | state 1: the logos (`SEGALOGO`, `TMLOGO2`, `ADX1`), the attract movie `MV000M00`, the title |
+| `0x06004B24` title_menu | state 3: New Game, Option |
+| `0x06025A24` wrong_disc | `WRONG.SPR` |
+| `0x060260FC`, `0x06023AEC` | the save on the backup memory (`DEEPFEAR_01`) |
+| `0x060106A8` load_game | the tables, the models, the weapons' sounds, the room's `ATR` and `SF` ("Now Loading") |
+| `0x06023BF8` save_screen | `SAV_BG`, `DIALOG`, `SAVE` |
+| `0x06010D40` game_loop | the rooms: room names, the player, events, cutscenes |
+
+Below them: `0x06004404` next_frame (the pad, the reset combination,
+`slSynch`: called once per frame by every loop), `0x0602C488` the AVI
+player, `0x06026C14` the event player, `0x0602A5E8` the in-engine
+cutscene loader. That loader builds `%s.NHD`, `%s.BG0`, `%s.NMO` and
+`%s.ADX` from `MVnnnNmm`, and no format string anywhere builds a
+`MV….SPR`: **the European program never loads the Japanese subtitles**
+(open question 7).
 
 The initialisation, `0x06004314`:
 
@@ -158,10 +174,12 @@ status). The game's use:
   the DSP if any was written.
 * `0x06030588`: whether the DSP has finished.
 
-Eight records suggest eight voices (sound? ADX decoding, which needs a
-filter per channel?), but what the program computes is **open**: its
-disassembly needs an SCU DSP decoder, which saturnkit does not have.
-Either way the runtime needs **an SCU DSP interpreter**.
+**The program is the ADX decoder** (session 2, with saturnkit's new
+`scudsp` disassembler; `11-runtime.md`): for each of the 8 channel
+records it DMAs an 18-byte ADX block into data RAM, unpacks and
+sign-extends its 32 4-bit samples, scales them through the multiplier,
+and DMAs 32 16-bit samples to sound RAM. The runtime now has an SCU DSP
+interpreter, and with it the game's music plays.
 
 ## Interrupts, BIOS services, and the reset
 
@@ -169,8 +187,9 @@ Besides SGL's handlers: `SYS_SETUINT`, `SYS_SETSCUIM`, `SYS_CHGSCUIM`,
 `SYS_GETSCUIM` (the SCU mask), `SYS_CHGSYSCK`, `SYS_GETSYSCK`, the BUP
 pointers (0x06000354, 0x06000358: saves, the name `DEEPFEAR_01`), the
 slave vector 0x06000250, **0x06000280**, called once by `slInitSystem`
-with the pointer 0x0605AFDC (by Sega's `sega_sys.h`, `SYS_CHGUIPR`, the
-table of interrupt priorities; to confirm), and **0x0600026C**, loaded
+with the pointer 0x0605AFDC (`SYS_CHGUIPR`: the table holds 32 words,
+one per SCU interrupt 0x40–0x5F, the SCU mask its handler runs under;
+session 2), and **0x0600026C**, loaded
 at 14 sites: at 0x06004404 it is called when the pad reads A+B+C+START,
 so it is the reset to the system, as in Virtual Hydlide.
 
@@ -200,8 +219,9 @@ bank `MYSE.ACX` (the code before them writes to sound RAM at
 driver through its command area (0x25A00700) and SGL's queue (0x25A007A0,
 flushed at every VBlank-IN). There are no sequences on the disc: the
 music and voices are ADX files decoded in software into PCM buffers in
-sound RAM, which the driver plays (0x25A78000, SGL's PCM area). Which
-code decodes them (the SH-2s, or the SCU DSP above) is open.
+sound RAM, which the driver plays (0x25A78000, SGL's PCM area): the
+SH-2 writes the channel records into the SCU DSP, which fetches the
+blocks by DMA, decodes them and writes the PCM out (above).
 
 ## Function discovery
 
@@ -242,4 +262,5 @@ differences:
 
 discover is close on GCC's code, and what it misses is known: GCC's switch
 form, SGL's handlers and pointer tables, and a stricter test for text.
-That is phase 2's first task for saturnkit (`06-attack-plan.md`).
+**Session 2 taught it all three**: 1 688 functions, 1 250 of Ghidra's
+1 252, 45 switch tables, no function with problems (`09-recompiler.md`).

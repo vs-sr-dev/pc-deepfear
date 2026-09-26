@@ -27,14 +27,16 @@ Redump-style .cue/.bin sets in `iso/`.
 ## Layout
 
     docs/            disc, format and code analysis, and the plan
-    tools/           Deep Fear-specific tools: oracle.py
+    tools/           Deep Fear-specific data and tools: names-1st.tsv, recomp.py, run.py, oracle.py
     saturnkit/       game-agnostic Saturn toolkit (submodule)
     iso/, build/     your discs and everything derived from them (ignored by git)
 
 ## Tools
 
-The Python tools need only Python 3.8+ and no dependencies. The oracle
-needs RetroArch with the Beetle Saturn core. Run from the repository root.
+The Python tools need only Python 3.8+ and no dependencies. Building the
+recompiled C++ needs CMake, Ninja, clang and SDL3 (MSYS2's mingw64, found at
+`C:\msys64\mingw64\bin`). The oracle needs RetroArch with the Beetle
+Saturn core. Run from the repository root.
 
 ```sh
 D1="iso/Deep Fear (Europe) (Disc 1).cue"
@@ -54,8 +56,18 @@ python -m saturnkit.sh2 $EXE --base 06004000 --at 0603B784 --count 60   # slInit
 python -m saturnkit.sh2 $EXE --base 06004000 --refs 25FE0080:25FE0090   # the SCU DSP
 python -m saturnkit.hw 25FE0080 06000250
 
-# functions and code/data
+# functions and code/data; the SCU DSP's program (the ADX decoder)
 python -m saturnkit.recomp.discover $EXE --base 06004000 --report
+python -m saturnkit.scudsp $EXE --base 06004000 --at 0605AB94 --count 204
+
+# both discs' programs to C++, built with clang (MSYS2) and checked against the interpreter
+python tools/recomp.py --build --test
+
+# run it on saturnkit's runtime: headless with the pad script (to the title, the
+# attract movie, New Game), pictures at chosen VBlanks, the CD block's commands
+python tools/run.py -- --shot 600,1500
+python tools/run.py -- --trace
+python tools/run.py --play                 # a window, the keyboard or a gamepad
 
 # the oracle: Beetle Saturn in RetroArch, pressed and photographed from here
 python tools/oracle.py --at 36:START,39:START,60:START,66:shot    # to the first room
@@ -71,8 +83,15 @@ the SCU DSP in use; the sound all ADX through Sega's driver; the formats
 read at a glance and nothing compressed; Beetle Saturn driven to the
 first room. Static recompilation looks simpler than Virtual Hydlide's (one
 program instead of fifteen), with new work for saturnkit: GCC's switches,
-the SCU DSP, SGL's timing, two discs (`docs/06-attack-plan.md`). Next:
-the code map (`docs/07-next-session.md`).
+the SCU DSP, SGL's timing, two discs (`docs/06-attack-plan.md`).
+
+Session 2: the code map, the recompiler, the first run. saturnkit's
+function discovery learned GCC's and SGL's code (1 250 of the 1 252
+functions Ghidra finds); the program is C++ that passes its self-test;
+on saturnkit's runtime, which gained the SCU DSP (Deep Fear's ADX
+decoder), the game boots, shows its title and plays its attract movie
+with sound. After New Game the loading stalls on the CD block. Next:
+past the loading, into the first room (`docs/07-next-session.md`).
 
 ## Documentation
 
@@ -84,6 +103,8 @@ the code map (`docs/07-next-session.md`).
 * [05-open-questions.md](docs/05-open-questions.md) — what is not known yet
 * [06-attack-plan.md](docs/06-attack-plan.md) — feasibility, where to cut, what a better Deep Fear means, the phases
 * [07-next-session.md](docs/07-next-session.md) — the next session's list
+* [09-recompiler.md](docs/09-recompiler.md) — the program as C++: discovery on GCC and SGL, the counts, the self-test
+* [11-runtime.md](docs/11-runtime.md) — the program on saturnkit's Saturn: how far it runs, the SCU DSP, the loading stall
 * [10-saturnkit.md](docs/10-saturnkit.md) — what this port gave saturnkit
 
 ## Licence

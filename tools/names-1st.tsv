@@ -1,0 +1,39 @@
+# Function names for 1ST.BIN (loaded at 0x06004000), found by reading the code (docs/03-executables.md).
+# SGL names are SGL's documented functions that the code matches in behaviour, not symbols.
+# address	name	how it was established
+06004000	crt0	the 1st read address; sets SR, r15, CCR, GBR, jumps to 0x06004040
+06004040	start	static constructors, clears the BSS and SGL's system area, calls main
+060040C4	main	crt0 calls it; the state machine on the byte at 0x06063410
+06004314	game_init	main's first call: slInitSystem, slDynamicFrame, the game's initialisations
+06004404	next_frame	reads the pad, resets on A+B+C+START (0x0600026C), then slSynch
+060044A4	boot_and_title	state 1: logos (SEGALOGO, TMLOGO2, ADX1), the attract movie MV000M00, the title
+06004B24	title_menu	state 3: New Game, Option (TTL.SPR, OPTION.SPR)
+060106A8	load_game	loads the tables, models, weapon sounds, the room's ATR and SF (NOWLOAD.SPR)
+06010D40	game_loop	the rooms: room names, player, events, cutscenes (NM%02d%02d.SPR, MV%03dN%02d)
+06023AEC	save_check	DEEPFEAR_01 on the backup memory
+06023BF8	save_screen	SAV_BG, DIALOG, SAVE
+06025A24	wrong_disc	WRONG.SPR
+06026C14	event_player	events and in-engine cutscenes: MV%03dN%02d, EV%02d.ADX, SEBGM%02d.ADX
+0602A5E8	cutscene_load	builds %s.NHD, %s.BG0, %s.NMO, %s.ADX from MVnnnNmm (no %s.SPR: no subtitles)
+0602C488	movie_play	the AVI player: MV000M00.AVI, MV139M01.AVI
+060302C0	adx_dsp_init	loads the SCU DSP's ADX decoder (256 words from 0x0605AB94) and its 8 channel records
+060304E0	adx_dsp_run	writes the set channel records into DSP data RAM 2, starts the DSP
+06030588	adx_dsp_done	whether the DSP has finished
+06032574	dsp_load_program	stops the DSP, writes a program through PPAF/PPD
+06032610	dsp_write_data	writes DSP data RAM through PDA/PDD
+0603B784	slInitSystem	TV mode & 31, system clock, SGL's handlers, SINIT, SYS_CHGSCUIM (mode 2 = 320x256 by its table)
+0604338C	__sdivsi3	signed r4 / r5 -> r0 (sh2emu: 100/7 = 14, -100/7 = -14)
+06044F50	__udivsi3	unsigned r4 / r5 -> r0 (sh2emu: 0xFFFFFF9C/7 = 0x24924916)
+0604AF60	slDynamicFrame	sets or clears bit 7 of GBR+176; waits on VDP1's EDSR
+0604BFA4	slSynch_first	waits for VBlank-OUT, sets the countdown, then slSynch's body
+0604BFBE	slSynch	hands the slave its lists (SINIT), idles until the countdown GBR+19 goes negative
+0604CC74	slMulFX	16.16 multiply: dmuls.l, xtrct (sh2emu: 3 x 0.5 = 1.5, -3 x 2.5 = -7.5)
+0605425C	slave_start	writes 0x0605427C to 0x06000250, turns the slave on
+0605427C	slave_main	the slave: polls FTCSR, calls the function at 0x060542C4
+060552A6	vblank_in	SGL's VBlank-IN handler (SYS_SETUINT 0x40)
+060553FE	vblank_out	SGL's VBlank-OUT handler (SYS_SETUINT 0x41)
+06055270	dma0_end	SGL's level-0 DMA end handler (SYS_SETUINT 0x4B)
+06055282	dma1_end	SGL's level-1 DMA end handler (SYS_SETUINT 0x4A)
+06055294	dma2_end	SGL's level-2 DMA end handler (SYS_SETUINT 0x49)
+06055560	sgl_init_synch	stores the frame rate at GBR+18, installs SGL's interrupt handlers
+0605A360	smpc_handler	SGL's SMPC interrupt handler (SYS_SETUINT 0x47)

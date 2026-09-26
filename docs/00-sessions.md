@@ -40,3 +40,34 @@
   Japanese subtitle pictures on the disc go unused), and text appears
   only when the player examines things; the title menu's "Option" is
   the in-game options screen, with no subtitle or language setting.
+
+## Session 2 (2026-09-26) — the code map, the recompiler, the first run
+
+* **Discovery for GCC and SGL** in saturnkit (`09-recompiler.md`): GCC's
+  switch in its forms, tables of records, computed jumps into unrolled
+  code, handlers and callbacks reached by literal, `mova` or table, text
+  and pointer pairs kept out: 1 688 functions, **1 250 of Ghidra's
+  1 252**, none of the false ones. Virtual Hydlide loses no function.
+* **The map** (`03-executables.md`, `tools/names-1st.tsv`): `main`'s
+  states named (boot and title, title menu, wrong disc, save, load game,
+  save screen, game loop), the frame function, the AVI player, the event
+  player, the cutscene loader; SGL's and libgcc's routines, the division
+  and fixed-point helpers checked in saturnkit's interpreter.
+* **The SCU DSP program is the ADX decoder**: saturnkit's new `scudsp`
+  disassembler shows it fetching 18-byte blocks, decoding 32 samples,
+  writing 16-bit PCM to sound RAM.
+* **No subtitles in the European program**: its cutscene loader never
+  builds a `MV….SPR` name (the user had seen none in Beetle).
+* **The recompiler** (`tools/recomp.py`): both discs' programs as C++,
+  160 234 instructions each, built with clang; self-test 7 227 of 7 227
+  vectors (and saturnkit's 9 300).
+* **The first run** (`tools/run.py`, `11-runtime.md`): the recompiled
+  game boots on saturnkit's runtime, draws its logos and title, plays the
+  attract movie with its TrueMotion decoder, and its music is heard (by
+  the counts), at SGL's 30 fps. saturnkit gained the SCU DSP interpreter
+  and `SYS_CHGUIPR`. After New Game, loading stalls: GFS_SGL's music
+  stream and a file read do not share the drive as on the Saturn (open
+  question 14).
+* saturnkit: ed37c63, 1f04233, 6f6b437 (`10-saturnkit.md`); Virtual
+  Hydlide checked (51 485 of 51 485 vectors, the field reached with the
+  same frames and sound) and moved to them.

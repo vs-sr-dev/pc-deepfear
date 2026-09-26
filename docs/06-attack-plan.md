@@ -115,9 +115,9 @@ headless for an independent function list (`03-executables.md`).
 | Phase | Goal | saturnkit gains |
 |---|---|---|
 | 1 ✓ | feasibility, the discs, the code survey, the plan | — (used as it is) |
-| 2 | **code map**: discovery on GCC and SGL code, against Ghidra (the switch form, handlers, pointer tables, strings); SGL's functions named (`tools/names-1st.tsv`); the state machine of `main`; the SCU DSP program disassembled and understood; where ADX is decoded; the change of disc | `discover` for GCC, an SCU DSP disassembler, perhaps an SGL fingerprint |
-| 3 | **recompiler**: `1ST.BIN` to C++, compiling, the self-test against the interpreter | whatever GCC's code asks of the emitter |
-| 4 | **runtime core**: the boot to the title, headless: SGL's init and frame machine, the DMAC, indirect DMA, the slave every frame, GFS_SGL on the CD block, the DSP | the SCU DSP interpreter, SGL's VBlank order, BIOS 0x06000250/0x06000280 |
+| 2 ✓ | **code map**: discovery on GCC and SGL code, against Ghidra (the switch form, handlers, pointer tables, strings); SGL's functions named (`tools/names-1st.tsv`); the state machine of `main`; the SCU DSP program disassembled and understood; where ADX is decoded; the change of disc | `discover` for GCC, an SCU DSP disassembler, perhaps an SGL fingerprint |
+| 3 ✓ | **recompiler**: `1ST.BIN` to C++, compiling, the self-test against the interpreter (`09-recompiler.md`) | volatile pool slots written through `mova` |
+| 4 | **runtime core**: the boot to the title, headless (session 2: to the title and the attract movie with sound; loading stalls, `11-runtime.md`): SGL's init and frame machine, the DMAC, indirect DMA, the slave every frame, GFS_SGL on the CD block, the DSP | the SCU DSP interpreter, SGL's VBlank order, BIOS 0x06000250/0x06000280 |
 | 5 | **on screen**: logos, title, menus, the first room, a movie; against Beetle | VDP2 as the game needs it (cell backgrounds, masks, whatever else) |
 | 6 | **sound**: the driver, the ADX streams, the reverb; against Beetle's recording | checks of the PCM streams |
 | 7 | **the game**: play through rooms, cutscenes, saves (BUP), the change of disc | the second disc and the tray |
