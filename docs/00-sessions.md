@@ -35,5 +35,7 @@
 * saturnkit unchanged this session (`10-saturnkit.md`).
 * **Heard and seen by the user** in Beetle: the 16-second audio track is
   a wordless jingle, not the spoken CD-player warning, and it is not
-  played from the boot to the opening movie; the attract and opening
-  movies have English voices and no subtitles.
+  played from the boot to the opening movie; the movies and the
+  real-time cutscenes have English voices and no subtitles at all (the
+  Japanese subtitle pictures on the disc go unused), and text appears
+  only when the player examines things.

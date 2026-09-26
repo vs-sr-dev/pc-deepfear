@@ -66,8 +66,9 @@ widths used here were found by fitting and checked by eye: item boxes
 (`TT`, `UI`, `SP`).
 
 **The subtitles are Japanese** on this European disc: `MV002N01.SPR`
-renders 26 lines of Japanese dialogue (session 1). Whether the European
-game shows them is open.
+renders 26 lines of Japanese dialogue (session 1). The European game
+does not show them: its cutscenes have English voices and no subtitles
+(seen by the user in Beetle).
 
 ## `SMD`: models [V]
 

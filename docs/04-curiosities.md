@@ -10,7 +10,10 @@ Things found on the way that the port does not need.
    subtitle pictures (`MV*.SPR`) are in Japanese: `MV002N01.SPR` is 26
    lines of the ERS crew's banter ("Chief!" "Hey, what's going on?" "It's
    April Fool's! Did you forget?" … "The base has felt gloomy lately…").
-   The European release kept the Japanese files.
+   The European release kept the Japanese files, but shows no subtitles
+   at all: its movies and cutscenes are voiced in English, and text
+   appears only when the player examines something (seen by the user in
+   Beetle).
 
 3. **"A game that uses a large number of movies."** The disc's abstract
    file, `DEEP_ABS.TXT`, in Japanese on the European disc too, describes
