@@ -11,7 +11,7 @@ registers, `-- --trace` for the CD block's commands and the DMAs.
 ## The game
 
 The user played session 3's build into the room: all of it works (the
-stray pixels in the letterbox's bands, fixed). For what goes wrong next,
+stray pixels in the letterbox's bands, fixed and confirmed by the user). For what goes wrong next,
 `python tools/run.py --play -- --record-input FILE` keeps the play, to be
 given back headless (`--input @FILE`).
 
