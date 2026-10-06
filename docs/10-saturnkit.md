@@ -15,6 +15,7 @@ entry is a saturnkit commit and what Deep Fear asked of it.
 | 3 | 1413f52 | the division unit's shadows of DVDNTH/DVDNTL at 0x118/0x11C, which SGL's `slLookAt` reads (every matrix was zero, so every vertex); the SH-2 DMAC's 16-byte transfers whole (they moved a quarter: the logos' and the menu's missing lines, open question 15, and the room's name box) |
 | 3 | 4235bbc, 65e9f59 | `--dump` holds VDP2's registers; the windows note reads WCTL; the README's ports table and checks |
 | 3 | 5d0471b, 88d5062 | VDP2's windows 0 and 1 (rectangles or line tables, inside or outside, OR or AND) on NBG0–NBG3 and the sprite layer: the letterbox's bands, where the user saw stray pixels |
+| 3 | 6db90c1, df84bb9, f563b97 | the CD drive at its real 2x (it read at 4x) after a seek timed as Mednafen's: the item screen's palette, copied at a VBlank from a buffer the next file had already overwritten; the SCU's indirect DMA traces its first transfers |
 
 Each change was checked on Virtual Hydlide: its 15 programs recompiled,
 the self-test (51 485 of 51 485 vectors; 51 542 in session 3), the
@@ -23,7 +24,11 @@ to 6f6b437 (its commit a5d8199), then 65e9f59 (074c9ac) and 88d5062
 (c69eadb). From session 3 also on X JAPAN (self-test 11 632 of 11 632,
 the headless run the same before and after), moved to 65e9f59 (ab4c653)
 and 88d5062 (f384478). For the windows both runs' pictures were compared
-before and after: 48 and 51 shots, pixel-identical.
+before and after: 48 and 51 shots, pixel-identical. The drive's timing
+moves both runs: Virtual Hydlide reaches its field about 10 s later
+(1 363 frame changes in 7 200 VBlanks, its script's turns now before the
+field), X JAPAN ends on the same corridor picture (2 506 frame changes);
+moved to f563b97 (a16240f, 007d97b).
 
 ## What Deep Fear will ask next
 

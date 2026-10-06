@@ -14,11 +14,14 @@ N,...` saves pictures at those VBlanks (`build/run/shot-N.png`), `--
 | ~150–450 | the Duck TrueMotion and CRI ADX screens | whole (session 2: only their top) |
 | ~600 | **the title**, "Press Start Button" blinking | as Beetle's |
 | 1100, 1250 | START on the title; the menu's "New Game" | the text drawn (session 2: missing) |
-| ~1260–1450 | "Now Loading...": the sound banks, the room tables, the first room's attributes (`A020601.ATR`), the title music `SEBGM08.ADX` streaming meanwhile | (session 2: stalled here) |
-| ~1460 | **the opening movie** `MV001M01.AVI` (Sega's logo, then the story) | |
-| 1700 | START skips it; the first room loads: `S020601.C03` (the background), `NM0206.SPR` (the room's name), `SEBGM04.ADX` (its music, looped by GFS from sector 25 to 66) | |
-| ~1760 | **the ERS Room**, CCD-Area 2F, fading in: the background, John Mayor on the hatch with his shadow, the AIR and HP gauges, the room's name in its box for two seconds | as Beetle's (`build/oracle/newgame/t66.png`, `t70.png`) |
-| 2100–2200 | UP on the pad: he walks | |
+| ~1260–1800 | "Now Loading...": the sound banks, the room tables, the first room's attributes (`A020601.ATR`), the title music `SEBGM08.ADX` streaming meanwhile | (session 2: stalled here) |
+| ~1810 | **the opening movie** `MV001M01.AVI` (Sega's logo, then the story) | |
+| 2300 | START skips it; the first room loads: `S020601.C03` (the background), `NM0206.SPR` (the room's name), `SEBGM04.ADX` (its music, looped by GFS from sector 25 to 66) | |
+| ~2410 | **the ERS Room**, CCD-Area 2F, fading in: the background, John Mayor on the hatch with his shadow, the AIR and HP gauges, the room's name in its box for two seconds | as Beetle's (`build/oracle/newgame/t66.png`, `t70.png`) |
+| later | UP on the pad: he walks; START opens the menu (ITEM, WEAPON, MAP, FILE, OPTION), C enters one | the item screen and the map as Beetle's (`build/oracle/manual/screenshots`) |
+
+The VBlanks are those of the CD drive at its real speed (below); before
+that fix the loading ended near 1450 and the room came at ~1760.
 
 `main`'s state byte (0x06063410) is 7, the game loop. Pictures of the
 whole way: `-- --shot 150,300,...`.
@@ -79,6 +82,20 @@ Session 3, three faults of saturnkit's that only SGL and GFS_SGL met:
   missing lines were the same fault** (open question 15), not VDP2's
   rotation planes as session 2 guessed: the game never turns those on
   in all of this.
+* **The CD drive's speed and seeks.** The item screen's panel came out
+  in the wrong colours (yellow frame, garbled item pictures; seen by the
+  user, against Beetle). It loads `ITEM.SPR` (a 512-byte palette, then
+  cells) into the buffer at 0x06063420, DMAs the cells to VDP2, has SGL
+  copy the palette to colour RAM 0 at the next VBlank (SCU DMA level 2,
+  indirect, table at 0x060FB800), and meanwhile starts reading
+  `ITEM_001.SPR` into the same buffer. The runtime's drive read 300
+  sectors a second with no seek, so the next file's first sector, its
+  palette, was in the buffer 6 ms later, before that VBlank. Now 150 a
+  second after a seek timed as Mednafen's (about 110 ms and more by the
+  distance): the copy takes `ITEM.SPR`'s palette. The map screen had
+  looked wrong to the user too; it is now as Beetle's. Loading is slower
+  in virtual time, as on the Saturn (the instant loading of the PC port
+  is for later, `06-attack-plan.md`).
 
 The rest was there from Virtual Hydlide: the HLE boot, SGL's VBlank
 work (the SH-2's DMAC channel 1 copying the VDP2 register image, SCU DMA

@@ -21,15 +21,22 @@ given back headless (`--input @FILE`).
 * **The room's foreground** (open question 4): the player behind
   something of the room, NBG0/NBG3 at priority 7 over him; `--dump`
   there.
-* **The in-game menu** (Beetle's `t82`: ITEM, WEAPON, MAP, FILE, OPTION)
-  and an examined object's text.
+* The in-game menu: works (the user), the item screen and the map as
+  Beetle's since the drive's timing. Still to see: FILE, OPTION, an
+  examined object's text.
+* **The player in front of the foreground by 2–3 pixels** (seen by the
+  user at a corner and a table) before he goes correctly behind it: a
+  recorded play there (`--record-input`), then `--dump` at those frames:
+  the mask's layer, its scroll against the background's, the sprite's
+  priority.
 
 ## Keep in mind
 
 * Every saturnkit change is checked on Virtual Hydlide (recompile,
   self-test 51 542 vectors, the run to the field: 3 program starts,
-  1 539 frame changes) and on X JAPAN (self-test 11 632 vectors, the run
-  to 10 200 VBlanks: 2 529 frame changes), then their submodules move.
+  1 363 frame changes since the drive's real speed) and on X JAPAN
+  (self-test 11 632 vectors, the run to 10 200 VBlanks: 2 506 frame
+  changes), then their submodules move.
 * The ADX decode (the SCU DSP) against ffmpeg's of the same file (open
   question 3): the room's `SEBGM04.ADX` with `-- --wav`.
 * The frame rate (open question 1): a store watch on the player's

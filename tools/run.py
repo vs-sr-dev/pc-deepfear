@@ -29,8 +29,8 @@ BUILD = os.path.join(ROOT, "build", "recomp-build")
 OUT = os.path.join(ROOT, "build", "run")
 MSYS = r"C:\msys64\mingw64\bin"
 
-# VBlanks (60 Hz): the title takes START from about 1000; New Game; the opening movie
-ROOM_SCRIPT = "1100:START,1108:,1250:START,1258:,1700:START,1708:"
+# VBlanks (60 Hz): the title takes START from about 1000; New Game; the opening movie (from about 1850)
+ROOM_SCRIPT = "1100:START,1108:,1250:START,1258:,2300:START,2308:"
 
 
 def report(path):

@@ -99,7 +99,12 @@
   window 0, which saturnkit did not draw. Windows 0 and 1 now done;
   the user played it again: the bands clean.
 * **Room to room, played by the user**: the doors and the transitions
-  between rooms work.
+  between rooms work. The menu works; the item screen's colours were
+  wrong and the map looked different: the runtime's CD drive read at 4x
+  with no seek, so a file's palette was overwritten by the next file
+  before SGL's VBlank copy. Now 2x with Mednafen's seek times; both
+  screens as Beetle's. The player shows 2–3 pixels in front of the
+  foreground before going behind it: open.
 * saturnkit: be42e26, 1413f52, 4235bbc, 65e9f59, 5d0471b, 88d5062
   (`10-saturnkit.md`); Virtual Hydlide (51 542 of 51 542 vectors, the
   field with the same frames, the same pictures) and X JAPAN (11 632 of
