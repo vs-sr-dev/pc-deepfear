@@ -98,6 +98,8 @@
   rows: the game letterboxes the screen to lines 16–239 with VDP2's
   window 0, which saturnkit did not draw. Windows 0 and 1 now done;
   the user played it again: the bands clean.
+* **Room to room, played by the user**: the doors and the transitions
+  between rooms work.
 * saturnkit: be42e26, 1413f52, 4235bbc, 65e9f59, 5d0471b, 88d5062
   (`10-saturnkit.md`); Virtual Hydlide (51 542 of 51 542 vectors, the
   field with the same frames, the same pictures) and X JAPAN (11 632 of

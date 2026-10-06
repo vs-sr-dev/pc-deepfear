@@ -15,9 +15,9 @@ stray pixels in the letterbox's bands, fixed and confirmed by the user). For wha
 `python tools/run.py --play -- --record-input FILE` keeps the play, to be
 given back headless (`--input @FILE`).
 
-* **Out of the ERS Room**: the next room through a door (the loading
-  between rooms, its camera cut), with a pad script or the user's
-  recorded play; Beetle at the same place with `tools/oracle.py`.
+* ~~Out of the ERS Room~~: **the transitions between rooms work**
+  (played by the user in session 3). A recorded play through several
+  rooms, given back headless, would make a regression run.
 * **The room's foreground** (open question 4): the player behind
   something of the room, NBG0/NBG3 at priority 7 over him; `--dump`
   there.
