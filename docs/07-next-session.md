@@ -15,7 +15,6 @@ stray pixels in the letterbox's bands, fixed). For what goes wrong next,
 `python tools/run.py --play -- --record-input FILE` keeps the play, to be
 given back headless (`--input @FILE`).
 
-
 * **Out of the ERS Room**: the next room through a door (the loading
   between rooms, its camera cut), with a pad script or the user's
   recorded play; Beetle at the same place with `tools/oracle.py`.
