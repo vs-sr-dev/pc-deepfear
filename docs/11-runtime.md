@@ -2,25 +2,30 @@
 
 `python tools/run.py` boots disc 1 into the recompiled program on
 saturnkit's runtime, headless and deterministic (virtual time, VBlanks at
-60 Hz), with a pad script; `--play` opens a window instead.
+60 Hz), with a pad script; `--play` opens a window instead. `-- --shot
+N,...` saves pictures at those VBlanks (`build/run/shot-N.png`), `--
+--dump N,...` the video memories and registers.
 
-## Where it gets (session 2)
+## Where it gets (session 3)
 
 | VBlank | What | |
 |---|---|---|
 | 0 | the HLE boot loads `1ST.BIN`, the `DISC1` module takes over | |
-| ~200–450 | the Duck TrueMotion and CRI ADX screens | only their first lines are drawn (below) |
+| ~150–450 | the Duck TrueMotion and CRI ADX screens | whole (session 2: only their top) |
 | ~600 | **the title**, "Press Start Button" blinking | as Beetle's |
-| ~1430 | **the attract movie** `MV000M00.AVI`: TrueMotion decoded by the game's own code, drawn through VDP1 | the frames look right |
-| | **sound**: the movie's, 2.6 million of 3.7 million samples not silent in 5 000 VBlanks; the menu's confirm and select effects (ADX from the `ACX` banks) | the effects **heard right by the user**; the title is silent, as on Beetle (its recording: sound only in the BIOS's first 12 s, then none until the movie) |
-| 1100, 1250 | START on the title, START on New Game | the menu's text is not drawn (below) |
-| ~1500 | loading the game (`load_game`, 0x060106A8): **stalls** | GFS waits for sectors that never come (below) |
+| 1100, 1250 | START on the title; the menu's "New Game" | the text drawn (session 2: missing) |
+| ~1260–1450 | "Now Loading...": the sound banks, the room tables, the first room's attributes (`A020601.ATR`), the title music `SEBGM08.ADX` streaming meanwhile | (session 2: stalled here) |
+| ~1460 | **the opening movie** `MV001M01.AVI` (Sega's logo, then the story) | |
+| 1700 | START skips it; the first room loads: `S020601.C03` (the background), `NM0206.SPR` (the room's name), `SEBGM04.ADX` (its music, looped by GFS from sector 25 to 66) | |
+| ~1760 | **the ERS Room**, CCD-Area 2F, fading in: the background, John Mayor on the hatch with his shadow, the AIR and HP gauges, the room's name in its box for two seconds | as Beetle's (`build/oracle/newgame/t66.png`, `t70.png`) |
+| 2100–2200 | UP on the pad: he walks | |
 
-The game keeps SGL's pace: **578 VDP1 frame changes in 1 200 VBlanks**
-on the title, a frame every 2.07 VBlanks, 30 fps at 60 Hz. With the
-drawing instant, dynamic frame never has to wait.
+`main`'s state byte (0x06063410) is 7, the game loop. Pictures of the
+whole way: `-- --shot 150,300,...`.
 
 ## What the runtime needed
+
+Session 2:
 
 * **`SYS_CHGUIPR`** (BIOS 0x06000280): `slInitSystem` hands it a table
   of 32 words, one per SCU interrupt 0x40–0x5F; by its content the SCU
@@ -40,47 +45,68 @@ drawing instant, dynamic frame never has to wait.
   them straight into the sound driver's PCM buffers.
 * The recompiler's fixes for SGL's assembly (`09-recompiler.md`).
 
-The music of a room has not played yet (the title has none); its ADX
-decode against ffmpeg's is still to compare (open question 3).
+Session 3, three faults of saturnkit's that only SGL and GFS_SGL met:
+
+* **The CD block's Play** (open question 14). After New Game GFS_SGL
+  streams the title music through filter 0 (FAD 0x4C45) and then wants a
+  file through filter 1 (FAD 0x1117). Its stream pushes the end of its
+  play on with Play commands of mode 0xFF and growing lengths (0x19,
+  0x32, 0x4D sectors from 0x4C45), and issues the file's play only once
+  the stream's has ended (PEND). The runtime took mode 0xFF as "repeat
+  for ever" and every Play as a seek back to its start, so the stream
+  never ended and the file was never read. Now, as in Mednafen's CD
+  block: the repeat count changes only when the mode's bits 4–6 are
+  clear (0xFF: no change); bit 7 leaves the pickup where it is, so the
+  stream reads on to its new end; a position 0xFFFFFF is the last Play's;
+  an end in sectors counts from the start given; the play ends when the
+  position leaves the range; the status's low nibble counts the repeats
+  done.
+* **The division unit's shadow registers.** Nothing on VDP1 was in
+  place (the player, the gauges: every vertex at 0,0). The slave builds
+  the polygons from a matrix the master hands it, and that matrix was
+  zero: `slLookAt` (0x0604D6xx) divides 64/32 through DVSR, DVDNTH,
+  DVDNTL and reads the quotient back from **0xFFFFFF1C**, a shadow of
+  DVDNTL (0x18 is DVDNTH's), which the runtime left at 0. Its rotation
+  (0x0604D9A2) then zeroed the camera matrix, and every matrix after it.
+  The shadows are now written by each division (Mednafen: written by a
+  division or a store there, read back as they are).
+* **The SH-2 DMAC's 16-byte transfers.** TCR counts longwords, four to a
+  16-byte unit; the runtime moved one unit per four counts *and* skipped
+  three counts each time, so a quarter of the bytes. The room's name box
+  (`NM0206.SPR`, its 5 184 bytes of cells copied to VDP2 by DMAC 0) came
+  out with its first 1 296 bytes and the rest left as the game had
+  cleared it, light grey; and **the logo screens' and the title menu's
+  missing lines were the same fault** (open question 15), not VDP2's
+  rotation planes as session 2 guessed: the game never turns those on
+  in all of this.
 
 The rest was there from Virtual Hydlide: the HLE boot, SGL's VBlank
 work (the SH-2's DMAC channel 1 copying the VDP2 register image, SCU DMA
 levels 1 and 2 in indirect mode), the slave woken by SINIT every frame,
-the CD block over the .cue/.bin (GFS_SGL reads the AVI and ADX files
-right: the movie buffer in WRAM-L matches `MV000M00.AVI` byte for
-byte), the 68000 running Sega's driver Ver-2.10, the SCSP.
+the CD block over the .cue/.bin, the 68000 running Sega's driver
+Ver-2.10, the SCSP.
 
-## The stall: a stream and a file on one drive
+## The first room on VDP2 and VDP1
 
-After New Game, GFS reads the game's files (the models) while the title
-music streams. From the CD block's trace (`--trace`):
+From `-- --dump 2400` (open question 4, answered):
 
-* the music's ADX streams through filter 0 into buffer partition 0
-  (range FAD 0x4C45, 368 sectors), consumed a sector at a time (command
-  0x63, Get Then Delete Sector Data);
-* the file to read gets filter 1, range FAD 0x1117, 15 sectors, into
-  partition 1 (commands 0x40, 0x44, 0x46, 0x48), but the drive stays
-  connected to filter 0 (command 0x30) and no play is issued at 0x1117;
-* instead the stream re-issues Play from 0x4C45 with growing lengths
-  (0x19, 0x32, 0x48 sectors), and each time the runtime seeks back to
-  0x4C45; partition 0 fills to 200 sectors, partition 1 stays empty, and
-  GFS's read loop (0x06032342) retries 20 000 times with a delay.
-
-On the Saturn, GFS_SGL's stream and file reads share the drive through
-its own scheduling, which must see something from the CD block that the
-runtime does not give: most likely what a Play whose range is already
-being read does (continue, not seek back), the drive pausing when the
-buffer is full, or the end of a play's length (PEND). That is session 3's
-first task (`07-next-session.md`).
+* **The background is NBG1**: 256 colours, 1×1 cells, one-word pattern
+  names with 12-bit character numbers, palette 1; its 42×30 cells of the
+  336×240 picture at VRAM 0x00000 (the `C03` file as it is), the map at
+  0x14000. NBG0 (priority 7) and NBG3 hold the foreground, NBG2 the
+  room's name box when it shows (priority 5, its cells at 0x20000).
+* **The player and the gauges are VDP1**: distorted sprites built by the
+  slave from SGL's polygon buffer (0x060D47E0, 0x24 bytes a command),
+  sent by SCU DMA level 1 in indirect mode (its table at 0x060C0000).
+* The screen is 320×256 (PAL); **window 0** shows lines 16–239 only
+  (WCTL 0x0303, W0 = 0,16–319,239). saturnkit does not do windows yet;
+  those lines are black here anyway.
+* Colour offset A/B are on for every layer, at zero in the room (the
+  fades use them).
 
 ## Other things seen
 
-* The logo screens draw only their first ~80 lines, and the title menu's
-  text ("New Game") is missing. **Seen by the user** in the window
-  (`tools/run.py --play`, with a gamepad): the title menu otherwise right,
-  the logos only a small part at the top. At the boot the runtime reports
-  that the game turns on **VDP2's rotation planes (RBG0/RBG1, BGON 0x0013)
-  and its windows (WCTL)**, which saturnkit does not draw yet: the likely
-  cause of both, and phase 5's first VDP2 work.
 * The runtime runs VBlanks at 60 Hz: the European game at the speed it
   was made for.
+* The music of the room plays (ADX through the SCU DSP); its decode
+  against ffmpeg's is still to compare (open question 3).

@@ -63,9 +63,11 @@ python -m saturnkit.scudsp $EXE --base 06004000 --at 0605AB94 --count 204
 # both discs' programs to C++, built with clang (MSYS2) and checked against the interpreter
 python tools/recomp.py --build --test
 
-# run it on saturnkit's runtime: headless with the pad script (to the title, the
-# attract movie, New Game), pictures at chosen VBlanks, the CD block's commands
-python tools/run.py -- --shot 600,1500
+# run it on saturnkit's runtime: headless with the pad script (the title, New Game,
+# the opening movie skipped, the first room), pictures at chosen VBlanks, the CD
+# block's commands, the video memories and registers
+python tools/run.py -- --shot 600,1500,2400
+python tools/run.py -- --dump 2400
 python tools/run.py -- --trace
 python tools/run.py --play                 # a window, the keyboard or a gamepad
 
@@ -90,8 +92,14 @@ function discovery learned GCC's and SGL's code (1 250 of the 1 252
 functions Ghidra finds); the program is C++ that passes its self-test;
 on saturnkit's runtime, which gained the SCU DSP (Deep Fear's ADX
 decoder), the game boots, shows its title and plays its attract movie
-with sound. After New Game the loading stalls on the CD block. Next:
-past the loading, into the first room (`docs/07-next-session.md`).
+with sound. After New Game the loading stalls on the CD block.
+
+Session 3: the first room. Three faults in saturnkit's runtime that only
+SGL met (the CD block's Play under GFS_SGL's streams, the division
+unit's shadow registers that SGL's camera reads, the SH-2 DMAC's 16-byte
+transfers) found and fixed; the game now loads, plays its opening movie
+and reaches the ERS Room, with the player, his gauges and the room's
+name as on Beetle, and he walks. Next: `docs/07-next-session.md`.
 
 ## Documentation
 
@@ -104,7 +112,7 @@ past the loading, into the first room (`docs/07-next-session.md`).
 * [06-attack-plan.md](docs/06-attack-plan.md) — feasibility, where to cut, what a better Deep Fear means, the phases
 * [07-next-session.md](docs/07-next-session.md) — the next session's list
 * [09-recompiler.md](docs/09-recompiler.md) — the program as C++: discovery on GCC and SGL, the counts, the self-test
-* [11-runtime.md](docs/11-runtime.md) — the program on saturnkit's Saturn: how far it runs, the SCU DSP, the loading stall
+* [11-runtime.md](docs/11-runtime.md) — the program on saturnkit's Saturn: how far it runs, what the runtime needed, the first room on VDP1 and VDP2
 * [10-saturnkit.md](docs/10-saturnkit.md) — what this port gave saturnkit
 
 ## Licence

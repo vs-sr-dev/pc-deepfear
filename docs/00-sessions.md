@@ -73,3 +73,29 @@
 * saturnkit: ed37c63, 1f04233, 6f6b437 (`10-saturnkit.md`); Virtual
   Hydlide checked (51 485 of 51 485 vectors, the field reached with the
   same frames and sound) and moved to them.
+
+## Session 3 (2026-10-06) — the first room
+
+* **Past the loading** (open question 14): GFS_SGL streams the music
+  with Play commands of mode 0xFF that only push the end on, and reads
+  the next file once the stream's play has ended. saturnkit's CD block
+  took 0xFF as "repeat for ever" and every Play as a seek back; its Play
+  now follows Mednafen's. "Now Loading...", the opening movie, then the
+  first room's files.
+* **The ERS Room** (`11-runtime.md`): the background on NBG1 (open
+  question 4), but nothing of VDP1 in place. The slave's polygons came
+  from a zero matrix: SGL's `slLookAt` reads its quotient from the
+  division unit's shadow register 0xFFFFFF1C, which the runtime never
+  wrote. With it, John Mayor on the hatch, his shadow, the AIR and HP
+  gauges; UP makes him walk.
+* **The SH-2 DMAC's 16-byte transfers moved a quarter of their bytes**:
+  the room's name box half grey, and the cause of session 2's cut logos
+  and missing menu text (open question 15) — not VDP2's rotation planes,
+  which the game never turns on.
+* Headless, from the boot to the room, every screen as Beetle's; VDP2's
+  windows (a letterbox over lines that are black anyway) the only thing
+  the game asks that saturnkit does not draw.
+* saturnkit: be42e26, 1413f52, 4235bbc, 65e9f59 (`10-saturnkit.md`);
+  Virtual Hydlide (51 542 of 51 542 vectors, the field with the same
+  frames) and X JAPAN (11 632 of 11 632, the same run) checked and moved
+  to them.
