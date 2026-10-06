@@ -8,15 +8,13 @@ headless, and the player walks (`11-runtime.md`).
 `-- --shot N,...` for pictures, `-- --dump N` for the video memories and
 registers, `-- --trace` for the CD block's commands and the DMAs.
 
-## First: the user's play
+## The game
 
-`python tools/run.py --play` (keys in `saturnkit/runtime/host.cpp`, or a
-gamepad), from the title into the room and out of it: what they see and
-hear against their memory of the game and Beetle. `-- --record-input
-FILE` keeps the play, so what goes wrong can be given back headless
-(`--input @FILE`).
+The user played session 3's build into the room: all of it works (the
+stray pixels in the letterbox's bands, fixed). For what goes wrong next,
+`python tools/run.py --play -- --record-input FILE` keeps the play, to be
+given back headless (`--input @FILE`).
 
-## Then: the game
 
 * **Out of the ERS Room**: the next room through a door (the loading
   between rooms, its camera cut), with a pad script or the user's
@@ -26,9 +24,6 @@ FILE` keeps the play, so what goes wrong can be given back headless
   there.
 * **The in-game menu** (Beetle's `t82`: ITEM, WEAPON, MAP, FILE, OPTION)
   and an examined object's text.
-* **VDP2's windows** in saturnkit: the only thing the game asks so far
-  that is not drawn (window 0 as a letterbox, lines 16–239). Check on
-  Virtual Hydlide and X JAPAN as always.
 
 ## Keep in mind
 

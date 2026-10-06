@@ -92,10 +92,12 @@
   the room's name box half grey, and the cause of session 2's cut logos
   and missing menu text (open question 15) — not VDP2's rotation planes,
   which the game never turns on.
-* Headless, from the boot to the room, every screen as Beetle's; VDP2's
-  windows (a letterbox over lines that are black anyway) the only thing
-  the game asks that saturnkit does not draw.
-* saturnkit: be42e26, 1413f52, 4235bbc, 65e9f59 (`10-saturnkit.md`);
-  Virtual Hydlide (51 542 of 51 542 vectors, the field with the same
-  frames) and X JAPAN (11 632 of 11 632, the same run) checked and moved
-  to them.
+* Headless, from the boot to the room, every screen as Beetle's.
+* **Played by the user** into the room: everything works, but for stray
+  pixels in the black bands. They were the background's top and bottom
+  rows: the game letterboxes the screen to lines 16–239 with VDP2's
+  window 0, which saturnkit did not draw. Windows 0 and 1 now done.
+* saturnkit: be42e26, 1413f52, 4235bbc, 65e9f59, 5d0471b, 88d5062
+  (`10-saturnkit.md`); Virtual Hydlide (51 542 of 51 542 vectors, the
+  field with the same frames, the same pictures) and X JAPAN (11 632 of
+  11 632, the same run and pictures) checked and moved to them.

@@ -99,8 +99,12 @@ From `-- --dump 2400` (open question 4, answered):
   slave from SGL's polygon buffer (0x060D47E0, 0x24 bytes a command),
   sent by SCU DMA level 1 in indirect mode (its table at 0x060C0000).
 * The screen is 320×256 (PAL); **window 0** shows lines 16–239 only
-  (WCTL 0x0303, W0 = 0,16–319,239). saturnkit does not do windows yet;
-  those lines are black here anyway.
+  (WCTL 0x0303 on every layer and the sprites, W0 = 0,16–319,239, its
+  outside the window area). The background (240 lines, scrolled by −8)
+  covers lines 8–247, so without windows its top and bottom rows showed
+  in the bands: **the user saw them as stray pixels** in the window.
+  saturnkit draws windows 0 and 1 since 5d0471b; the bands are black in
+  every picture from VBlank 50 to 3000.
 * Colour offset A/B are on for every layer, at zero in the room (the
   fades use them).
 
