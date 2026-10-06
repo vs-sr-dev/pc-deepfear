@@ -96,6 +96,16 @@ Session 3, three faults of saturnkit's that only SGL and GFS_SGL met:
   looked wrong to the user too; it is now as Beetle's. Loading is slower
   in virtual time, as on the Saturn (the instant loading of the PC port
   is for later, `06-attack-plan.md`).
+* **The CD status after a seek.** With the seeks timed, the user heard
+  three loud buzzes, at the start of the opening movie and later. The
+  movie is a long seek away (from `SOUND/` to near the disc's end, about
+  350 ms); the runtime reported PLAY as soon as the seek ended, a
+  sector's time before the first sector, and the movie player, reading
+  when it sees PLAY, decoded what was left in its buffers: full-scale
+  square waves in the sound, where the movie's first seconds (Sega's
+  logo) are silent. Mednafen shows PLAY only once a sector has come; so
+  does the runtime now. The user's recorded play, given back headless,
+  has no buzz left.
 
 The rest was there from Virtual Hydlide: the HLE boot, SGL's VBlank
 work (the SH-2's DMAC channel 1 copying the VDP2 register image, SCU DMA

@@ -16,6 +16,7 @@ entry is a saturnkit commit and what Deep Fear asked of it.
 | 3 | 4235bbc, 65e9f59 | `--dump` holds VDP2's registers; the windows note reads WCTL; the README's ports table and checks |
 | 3 | 5d0471b, 88d5062 | VDP2's windows 0 and 1 (rectangles or line tables, inside or outside, OR or AND) on NBG0–NBG3 and the sprite layer: the letterbox's bands, where the user saw stray pixels |
 | 3 | 6db90c1, df84bb9, f563b97 | the CD drive at its real 2x (it read at 4x) after a seek timed as Mednafen's: the item screen's palette, copied at a VBlank from a buffer the next file had already overwritten; the SCU's indirect DMA traces its first transfers |
+| 3 | 8d877e0 | the CD status shows PLAY only once a sector has come after a seek, as Mednafen's: the buzzes at the opening movie's start |
 
 Each change was checked on Virtual Hydlide: its 15 programs recompiled,
 the self-test (51 485 of 51 485 vectors; 51 542 in session 3), the
@@ -28,7 +29,8 @@ before and after: 48 and 51 shots, pixel-identical. The drive's timing
 moves both runs: Virtual Hydlide reaches its field about 10 s later
 (1 363 frame changes in 7 200 VBlanks, its script's turns now before the
 field), X JAPAN ends on the same corridor picture (2 506 frame changes);
-moved to f563b97 (a16240f, 007d97b).
+moved to f563b97 (a16240f, 007d97b), then 8d877e0 (c20fe4e, 3b85a4f),
+pixel-identical.
 
 ## What Deep Fear will ask next
 

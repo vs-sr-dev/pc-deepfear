@@ -24,11 +24,11 @@ given back headless (`--input @FILE`).
 * The in-game menu: works (the user), the item screen and the map as
   Beetle's since the drive's timing. Still to see: FILE, OPTION, an
   examined object's text.
-* **The player in front of the foreground by 2–3 pixels** (seen by the
-  user at a corner and a table) before he goes correctly behind it: a
-  recorded play there (`--record-input`), then `--dump` at those frames:
-  the mask's layer, its scroll against the background's, the sprite's
-  priority.
+* The player 2–3 pixels in front of the foreground (the Conference
+  Room's table): **the game's own**, the same on Beetle and on the
+  Saturn (open question 4). A PC-side fix is for phase 9 if wanted.
+* The opening movie's sound starts with the player's own timing: worth
+  a listen against Beetle's recording (`tools/oracle.py --record`).
 
 ## Keep in mind
 

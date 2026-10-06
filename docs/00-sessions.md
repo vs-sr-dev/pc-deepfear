@@ -103,8 +103,14 @@
   wrong and the map looked different: the runtime's CD drive read at 4x
   with no seek, so a file's palette was overwritten by the next file
   before SGL's VBlank copy. Now 2x with Mednafen's seek times; both
-  screens as Beetle's. The player shows 2–3 pixels in front of the
-  foreground before going behind it: open.
+  screens as Beetle's.
+* The player's trousers show 2–3 pixels over the Conference Room's
+  table: the foreground mask's own edge, **the same on Beetle and on the
+  user's Saturn**.
+* Three loud buzzes heard by the user: after a seek the runtime showed
+  PLAY before the first sector, and the movie player read its stale
+  buffers. PLAY now waits for a sector, as in Mednafen; the user's
+  recorded play, given back, is clean.
 * saturnkit: be42e26, 1413f52, 4235bbc, 65e9f59, 5d0471b, 88d5062
   (`10-saturnkit.md`); Virtual Hydlide (51 542 of 51 542 vectors, the
   field with the same frames, the same pictures) and X JAPAN (11 632 of
